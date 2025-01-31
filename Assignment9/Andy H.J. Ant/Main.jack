@@ -1,0 +1,36 @@
+class Main {
+    function void main() {
+        var Andy game;
+        var int x, y, direction;
+        var String sudoX, sudoY;
+        var int gavtisho;
+        var randomGenerator gen;
+        let gen = randomGenerator.new();
+        let sudoX = Keyboard.readLine("x, tu arafers sheiyvant darendomdeba: ");
+        let x = sudoX.intValue();
+        if(sudoX.length() = 0){
+          let x = gen.randoMint(511, 0);
+        }
+        if(x > 511) {let x = gen.mod(x, 511);}
+        let sudoY = Keyboard.readLine("y, tu arafers sheiyvant darendomdeba: ");
+        let y = sudoY.intValue();
+        if(sudoY.length() = 0){
+          let y = gen.randoMint(255, 100);
+        }
+        if(y > 255) {let y = gen.mod(y, 255);}
+        let direction = Keyboard.readInt("arafer:random, zemot: 1, marjvniv: 2, qvemot: 3, marcxniv: 4: ");
+        if(direction = 0){
+          let direction = gen.randoMint(3, 2) + 1;
+        }
+        if(direction > 4) {let direction = gen.mod(y, 4) + 1;}
+        do Screen.clearScreen();
+        let game = Andy.new(x, y, direction);
+        do game.run(gen);
+
+        do sudoX.dispose();
+        do sudoY.dispose();
+        do gen.dispose();
+        do game.dispose();
+      return;
+    }
+}

@@ -1,0 +1,941 @@
+function Andy.new 0
+push constant 8
+call Memory.alloc 1
+pop pointer 0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push argument 0
+push argument 1
+call Screen.drawPixel 2
+pop temp 0
+push argument 2
+pop this 0
+push argument 0
+pop this 1
+push argument 1
+pop this 2
+push constant 0
+push constant 0
+call List.new 2
+pop this 3
+push constant 0
+pop this 4
+push constant 0
+not
+pop this 5
+push constant 0
+push constant 0
+call List.new 2
+pop this 6
+push constant 0
+pop this 7
+push pointer 0
+return
+function Andy.dispose 0
+push argument 0
+pop pointer 0
+push this 3
+call List.dispose 1
+pop temp 0
+push this 6
+call List.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Andy.power 1
+push argument 0
+pop pointer 0
+push constant 1
+pop local 0
+label WHILE_EXP0
+push argument 2
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push local 0
+push argument 1
+call Math.multiply 2
+pop local 0
+push argument 2
+push constant 1
+sub
+pop argument 2
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function Andy.isBlackFlip 4
+push argument 0
+pop pointer 0
+push pointer 0
+push constant 2
+push argument 2
+call Andy.power 3
+pop local 0
+push argument 1
+call Memory.peek 1
+pop local 1
+push local 0
+push local 1
+and
+push constant 0
+eq
+not
+pop local 3
+push local 0
+push local 1
+not
+and
+push local 0
+not
+push local 1
+and
+or
+pop local 2
+push argument 1
+push local 2
+call Memory.poke 2
+pop temp 0
+push local 3
+return
+function Andy.whiteBlackPixel 1
+push argument 0
+pop pointer 0
+push this 0
+pop local 0
+push argument 1
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push local 0
+push constant 4
+call Math.divide 2
+push constant 4
+call Math.multiply 2
+sub
+pop local 0
+push local 0
+push constant 1
+add
+pop local 0
+goto IF_END0
+label IF_FALSE0
+push local 0
+push constant 1
+sub
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push constant 3
+add
+pop local 0
+goto IF_END1
+label IF_FALSE1
+push local 0
+push constant 1
+sub
+pop local 0
+label IF_END1
+label IF_END0
+push local 0
+pop this 0
+push constant 0
+return
+function Andy.andyMoveUp 0
+push argument 0
+pop pointer 0
+push this 2
+push constant 1
+sub
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+push constant 1
+sub
+pop this 2
+goto IF_END0
+label IF_FALSE0
+push constant 254
+pop this 2
+label IF_END0
+push constant 0
+return
+function Andy.andyMoveDown 0
+push argument 0
+pop pointer 0
+push this 2
+push constant 1
+add
+push constant 255
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+push constant 1
+add
+pop this 2
+goto IF_END0
+label IF_FALSE0
+push constant 1
+pop this 2
+label IF_END0
+push constant 0
+return
+function Andy.andyMoveLeft 0
+push argument 0
+pop pointer 0
+push this 1
+push constant 1
+sub
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 1
+push constant 1
+sub
+pop this 1
+goto IF_END0
+label IF_FALSE0
+push constant 510
+pop this 1
+label IF_END0
+push constant 0
+return
+function Andy.andyMoveRight 0
+push argument 0
+pop pointer 0
+push this 1
+push constant 1
+add
+push constant 511
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 1
+push constant 1
+add
+pop this 1
+goto IF_END0
+label IF_FALSE0
+push constant 1
+pop this 1
+label IF_END0
+push constant 0
+return
+function Andy.moveAndy 3
+push argument 0
+pop pointer 0
+push constant 16384
+push constant 32
+push this 2
+call Math.multiply 2
+add
+push this 1
+push constant 16
+call Math.divide 2
+add
+pop local 1
+push this 1
+push this 1
+push constant 16
+call Math.divide 2
+push constant 16
+call Math.multiply 2
+sub
+pop local 2
+push pointer 0
+push local 1
+push local 2
+call Andy.isBlackFlip 3
+pop local 0
+push pointer 0
+push local 0
+call Andy.whiteBlackPixel 2
+pop temp 0
+push this 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Andy.andyMoveUp 1
+pop temp 0
+label IF_FALSE0
+push this 0
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Andy.andyMoveRight 1
+pop temp 0
+label IF_FALSE1
+push this 0
+push constant 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call Andy.andyMoveDown 1
+pop temp 0
+label IF_FALSE2
+push this 0
+push constant 4
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+call Andy.andyMoveLeft 1
+pop temp 0
+label IF_FALSE3
+push this 4
+push constant 1
+add
+pop this 4
+push constant 0
+call Sys.wait 1
+pop temp 0
+push constant 0
+return
+function Andy.reset 3
+push argument 0
+pop pointer 0
+call Screen.clearScreen 0
+pop temp 0
+push this 7
+push constant 1
+add
+pop this 7
+push this 5
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 4
+push constant 0
+call List.new 2
+pop this 3
+push this 7
+push constant 0
+call List.new 2
+pop this 6
+push constant 0
+pop this 5
+goto IF_END0
+label IF_FALSE0
+push this 7
+push this 6
+call List.new 2
+pop this 6
+push this 4
+push this 3
+call List.new 2
+pop this 3
+label IF_END0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+call Output.println 0
+pop temp 0
+push this 6
+call List.print 1
+pop temp 0
+call Output.println 0
+pop temp 0
+push this 3
+call List.print 1
+pop temp 0
+push constant 5000
+call Sys.wait 1
+pop temp 0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+call Output.println 0
+pop temp 0
+push constant 38
+call String.new 1
+push constant 120
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Keyboard.readLine 1
+pop local 1
+push local 1
+call String.intValue 1
+pop this 1
+push local 1
+call String.length 1
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+push constant 511
+push argument 1
+push this 4
+push constant 477
+call randomGenerator.mod 3
+call randomGenerator.randoMint 3
+pop this 1
+label IF_FALSE1
+push this 1
+push constant 511
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+push this 1
+push constant 511
+call randomGenerator.mod 3
+pop this 1
+label IF_FALSE2
+push constant 38
+call String.new 1
+push constant 121
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Keyboard.readLine 1
+pop local 2
+push local 2
+call String.intValue 1
+pop this 2
+push local 2
+call String.length 1
+push constant 0
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 1
+push constant 255
+push argument 1
+push this 4
+push constant 223
+call randomGenerator.mod 3
+call randomGenerator.randoMint 3
+pop this 2
+label IF_FALSE3
+push this 2
+push constant 255
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push argument 1
+push this 2
+push constant 255
+call randomGenerator.mod 3
+pop this 2
+label IF_FALSE4
+push constant 62
+call String.new 1
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 122
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 49
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 106
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 50
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 113
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 51
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 120
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 52
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Keyboard.readInt 1
+pop this 0
+push this 0
+push constant 0
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 1
+push constant 3
+push argument 1
+push this 4
+push constant 7
+call randomGenerator.mod 3
+call randomGenerator.randoMint 3
+push constant 1
+add
+pop this 0
+label IF_FALSE5
+push this 0
+push constant 4
+gt
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push argument 1
+push this 2
+push constant 4
+call randomGenerator.mod 3
+push constant 1
+add
+pop this 0
+label IF_FALSE6
+push constant 0
+pop this 4
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 1
+push this 2
+call Screen.drawPixel 2
+pop temp 0
+push local 1
+call String.dispose 1
+pop temp 0
+push local 2
+call String.dispose 1
+pop temp 0
+push constant 0
+return
+function Andy.stopBeforeStart 0
+push argument 0
+pop pointer 0
+call Keyboard.keyPressed 0
+pop argument 1
+label WHILE_EXP0
+push argument 1
+push constant 32
+eq
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop argument 1
+push argument 1
+push constant 82
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push argument 2
+call Andy.reset 2
+pop temp 0
+call Keyboard.keyPressed 0
+pop argument 1
+label IF_FALSE0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Andy.run 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 2
+push constant 0
+pop local 1
+push pointer 0
+push local 0
+push argument 1
+call Andy.stopBeforeStart 3
+pop temp 0
+call Keyboard.keyPressed 0
+pop local 0
+label WHILE_EXP0
+push local 1
+not
+not
+if-goto WHILE_END0
+label WHILE_EXP1
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END1
+call Keyboard.keyPressed 0
+pop local 0
+push pointer 0
+call Andy.moveAndy 1
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+label WHILE_EXP2
+push local 0
+push constant 0
+eq
+not
+if-goto WHILE_END2
+call Keyboard.keyPressed 0
+pop local 0
+push pointer 0
+call Andy.moveAndy 1
+pop temp 0
+goto WHILE_EXP2
+label WHILE_END2
+push local 0
+push constant 32
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop local 2
+label IF_FALSE0
+push local 0
+push constant 81
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+not
+pop local 1
+label IF_FALSE1
+label WHILE_EXP3
+push local 0
+push constant 0
+eq
+not
+push local 0
+push constant 82
+eq
+or
+push local 2
+and
+not
+if-goto WHILE_END3
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXP3
+label WHILE_END3
+label WHILE_EXP4
+push local 0
+push constant 32
+eq
+push local 0
+push constant 82
+eq
+or
+not
+push local 2
+and
+not
+if-goto WHILE_END4
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXP4
+label WHILE_END4
+push constant 0
+pop local 2
+push local 0
+push constant 82
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push argument 1
+call Andy.reset 2
+pop temp 0
+push pointer 0
+push local 0
+push argument 1
+call Andy.stopBeforeStart 3
+pop temp 0
+call Keyboard.keyPressed 0
+pop local 0
+label IF_FALSE2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

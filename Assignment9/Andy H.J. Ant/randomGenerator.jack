@@ -1,0 +1,34 @@
+class randomGenerator {
+    field int start;
+    field int num;
+    constructor randomGenerator new() {
+       let start = 301;
+       let num = 0;
+       return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int mod(int a, int modnum){
+        return (a - ((a / modnum) * modnum));
+    }
+
+    method int randoMint(int max, int randseed){
+        var int cnt;
+        let cnt = max;
+        let num = num + 1;
+        if(num > 2) {let start = randseed + num;}
+        let start = ((12 * start) + 3234);
+        let start = mod(start, 4444);
+        while (~(cnt = 0)){
+            let cnt = cnt - 1;
+            let start = (start * 2) - 1;
+            let start = mod(start, 4417);
+        }
+        let start = mod(start, max);
+        return start;
+    }
+}

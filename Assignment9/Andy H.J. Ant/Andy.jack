@@ -1,0 +1,236 @@
+ class Andy {
+    field int direction;
+    field int x;
+    field int y;
+    field List arr;
+    field int currMoves;
+    field boolean firstTime;
+    field List counter;
+    field int cnt;
+
+    constructor Andy new(int Ax, int Ay, int dir) {
+       do Screen.clearScreen();
+       do Screen.setColor(true);
+       do Screen.drawPixel(Ax, Ay);
+       let direction = dir;
+       let x = Ax;
+       let y = Ay;
+       let arr = List.new(null, null);
+       let currMoves = 0;
+       let firstTime = true;
+       let counter = List.new(null, null);
+       let cnt = 0;
+       return this;
+    }
+ 
+    method void dispose() {
+       do arr.dispose();
+       do counter.dispose();
+       do Memory.deAlloc(this);
+       return;
+    }
+ 
+   method int power(int base, int to){
+      var int ans;
+      let ans = 1;
+      while(~(to = 0)){
+         let ans = ans * base;
+         let to = to - 1;
+      }
+      return ans;
+   }
+
+   method boolean isBlackFlip(int addrss, int index){
+      var int pow, address, color;
+      var boolean isBlck;
+      let pow = power(2, index);
+      let address = Memory.peek(addrss);
+      let isBlck = ~((pow & address) = 0);
+      let color = ((pow & (~address)) | ((~pow) & address));
+      do Memory.poke(addrss, color);
+      return isBlck;
+   }
+
+   method void whiteBlackPixel(boolean wB){
+      var int dir;
+      let dir = direction;
+      if(~wB){
+         let dir = dir - ((dir / 4) * 4);
+         let dir = dir + 1;
+      } else {
+         if((dir - 1) = 0){
+            let dir = (dir + 3);
+         } else{
+            let dir = (dir - 1);
+         }
+      }
+      let direction = dir;
+      return ;
+   }
+
+   method void andyMoveUp() {
+      if ((y - 1) > 0) {
+         let y = y - 1;
+      } else {
+         let y = 254;
+      }
+      return;
+   }
+
+   method void andyMoveDown() {
+      if ((y + 1) < 255) {
+         let y = y + 1;
+      } else {
+         let y = 1;
+      }
+      return;
+   }
+
+   method void andyMoveLeft() {
+      if ((x - 1) > 0) {
+         let x = x - 1;
+      } else{
+         let x = 510;
+      }
+      return;
+   }
+
+   method void andyMoveRight() {
+      if (x + 1 < 511) {
+         let x = x + 1;
+      } else {
+         let x = 1;
+      }
+      return;
+   }
+
+   method void moveAndy() {
+      var boolean b;
+      var int addr, ind;
+      let addr = 16384 + (32 * y) + (x / 16);
+      let ind = (x - ((x / 16) * 16));
+      let b  = isBlackFlip(addr, ind);
+      
+      do whiteBlackPixel(b);
+
+      if (direction = 1) { do andyMoveUp(); }
+      if (direction = 2) { do andyMoveRight(); }
+      if (direction = 3) { do andyMoveDown(); }
+      if (direction = 4) { do andyMoveLeft(); }
+      
+      let currMoves = currMoves + 1;
+      
+      do Sys.wait(0.001);
+      return;
+   }
+
+   method void reset(randomGenerator gen){
+      var int gavtisho;
+      var String sudoX, sudoY;
+      do Screen.clearScreen();
+      let cnt = cnt + 1;
+      if(firstTime){
+         let arr = List.new(currMoves, null);
+         let counter = List.new(cnt, null);
+         let firstTime = false;
+      } else {
+         let counter = List.new(cnt, counter);
+         let arr = List.new(currMoves, arr);
+      }
+      do Output.moveCursor(0,0);
+      do Output.println();
+            
+      do counter.print();
+      do Output.println();
+      do arr.print();
+
+      do Sys.wait(5000);
+      do Screen.clearScreen();
+      do Output.moveCursor(0,0);
+      do Output.println();
+      let sudoX = Keyboard.readLine("x, tu arafers sheiyvant darendomdeba: ");
+      let x = sudoX.intValue();
+      if(sudoX.length() = 0){
+         let x = gen.randoMint(511, gen.mod(currMoves, 477));
+      }
+      if(x > 511) {let x = gen.mod(x, 511);}
+      let sudoY = Keyboard.readLine("y, tu arafers sheiyvant darendomdeba: ");
+      let y = sudoY.intValue();
+      if(sudoY.length() = 0){
+         let y = gen.randoMint(255, gen.mod(currMoves, 223));
+      }
+      if(y > 255) {let y = gen.mod(y, 255);}
+      let direction = Keyboard.readInt("arafer:random, zemot: 1, marjvniv: 2, qvemot: 3, marcxniv: 4: ");
+      if(direction = 0){
+         let direction = gen.randoMint(3, gen.mod(currMoves, 7)) + 1;
+      }
+      if(direction > 4) {let direction = gen.mod(y, 4) + 1;}
+
+      let currMoves = 0;
+      do Screen.clearScreen();
+      do Screen.setColor(true);
+      do Screen.drawPixel(x, y);
+      
+      do sudoX.dispose();
+      do sudoY.dispose();
+      return;
+   }
+
+   method void stopBeforeStart(char key, randomGenerator gen){
+      let key = Keyboard.keyPressed();
+      while ((~((key = 32)))) { 
+         let key = Keyboard.keyPressed();
+         if (key = 82){
+            do reset(gen);
+            let key = Keyboard.keyPressed();
+         }
+      }
+      return;
+   }
+
+    method void run(randomGenerator gen) {
+      var char key;
+      var boolean exit;
+      var boolean isPaused;
+      let isPaused = false;
+      let exit = false;
+
+      do stopBeforeStart(key, gen);
+      let key = Keyboard.keyPressed();
+      
+      while (~exit) {
+
+         while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+            do moveAndy();
+         }
+         
+         while (key = 0) {
+            let key = Keyboard.keyPressed();
+            do moveAndy();
+         }
+        
+         if (key = 32)  { let isPaused = true; }
+         if (key = 81)  { 
+            do Screen.clearScreen();
+            let exit = true; 
+         }
+         
+         while ((~(key = 0) | (key = 82)) & isPaused) { let key = Keyboard.keyPressed(); } 
+         while ((~((key = 32) | (key = 82))) & isPaused) { let key = Keyboard.keyPressed(); }     
+         
+         let isPaused = false;
+
+         if (key = 82)  { 
+            do reset(gen);
+            do stopBeforeStart(key, gen);
+            let key = Keyboard.keyPressed();
+         }
+      }
+      return;
+    }
+ }
+ 
+ 
+ 
+ 
